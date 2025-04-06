@@ -116,7 +116,7 @@ if (createQuestionForm) {
                 formSuccessMessage.style.display = 'block';
                 createQuestionForm.reset(); // Clear the form
                 setTimeout(() => {
-                    window.location.href = '/index.html'; // Redirect to homepage after a short delay
+                    window.location.href = '/QuesAnsApp/index.html'; // Redirect to homepage after a short delay
                 }, 1500);
             }
         } catch (error) {
