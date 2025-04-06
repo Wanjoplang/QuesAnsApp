@@ -8,15 +8,17 @@ const noQuestionsMessage = document.getElementById('no-questions-message');
 const createQuestionBtn = document.getElementById('create-question-btn');
 
 const apiUrl = 'https://quesansapi.deno.dev'; // *** REPLACE THIS WITH YOUR ACTUAL DEPLOYED API URL ***
+const repositoryName = '/QuesAnsApp/'; // *** REPLACE THIS WITH YOUR REPOSITORY NAME (or '/' if deployed to root) ***
 
-// Function to fetch questions from the API
-async function fetchQuestions() {
-    if (!questionListContainer) return; // Ensure the element exists on the page
+async function fetchQuestions(tag = null, userId = null, search = null) {
+    if (!questionListContainer) return;
 
     loadingMessage.style.display = 'block';
     errorMessage.style.display = 'none';
-    noQuestionsMessage.style.display = 'none';fetch(`${apiUrl}/questions`)
-    questionList.innerHTML = ''; // Clear previous list
+    noQuestionsMessage.style.display = 'none';
+    if (questionList) {
+        questionList.innerHTML = '';
+    }
 
     try {
         const response = await fetch(`${apiUrl}/questions`);
@@ -27,14 +29,7 @@ async function fetchQuestions() {
         } else {
             const data = await response.json();
             if (Array.isArray(data) && data.length > 0) {
-                data.forEach(question => {
-                    const listItem = document.createElement('li');
-                    const link = document.createElement('a');
-                    link.href = `/questions/${question.id}`; // We'll handle navigation later
-                    link.textContent = question.questionText;
-                    listItem.appendChild(link);
-                    questionList.appendChild(listItem);
-                });
+                displayQuestions(data);
             } else {
                 noQuestionsMessage.style.display = 'block';
             }
@@ -47,21 +42,32 @@ async function fetchQuestions() {
     }
 }
 
-// Event listener for the "Create New Question" button (on homepage)
-if (createQuestionBtn) {
-    createQuestionBtn.addEventListener('click', () => {
-        window.location.href = '/QuesAnsApp/questions/new.html';
+function displayQuestions(questions) {
+    if (!questionList) return;
+    questionList.innerHTML = '';
+    questions.forEach(question => {
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = `${repositoryName}questions/question_detail.html?id=${question.id}`;
+        link.textContent = question.questionText;
+        listItem.appendChild(link);
+        questionList.appendChild(listItem);
     });
 }
 
-// --- Code for handling the Create New Question form ---
+if (createQuestionBtn) {
+    createQuestionBtn.addEventListener('click', () => {
+        window.location.href = `${repositoryName}questions/new.html`;
+    });
+}
+
 const createQuestionForm = document.getElementById('create-question-form');
 const formErrorMessage = document.getElementById('form-error-message');
 const formSuccessMessage = document.getElementById('form-success-message');
 
 if (createQuestionForm) {
     createQuestionForm.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
 
         formErrorMessage.style.display = 'none';
         formSuccessMessage.style.display = 'none';
@@ -114,9 +120,9 @@ if (createQuestionForm) {
                 formErrorMessage.style.display = 'block';
             } else {
                 formSuccessMessage.style.display = 'block';
-                createQuestionForm.reset(); // Clear the form
+                createQuestionForm.reset();
                 setTimeout(() => {
-                    window.location.href = '/QuesAnsApp/index.html'; // Redirect to homepage after a short delay
+                    window.location.href = `${repositoryName}index.html`;
                 }, 1500);
             }
         } catch (error) {
@@ -126,7 +132,6 @@ if (createQuestionForm) {
     });
 }
 
-// Call fetchQuestions when the homepage loads
 if (!window.location.pathname.includes('/questions/new.html')) {
     document.addEventListener('DOMContentLoaded', fetchQuestions);
 }
