@@ -15,11 +15,11 @@ async function fetchQuestions() {
 
     loadingMessage.style.display = 'block';
     errorMessage.style.display = 'none';
-    noQuestionsMessage.style.display = 'none';fetch(`https://quesansapi.deno.dev/questions`)
+    noQuestionsMessage.style.display = 'none';fetch(`${apiUrl}/questions`)
     questionList.innerHTML = ''; // Clear previous list
 
     try {
-        const response = await fetch(`https://quesansapi.deno.dev/questions`);
+        const response = await fetch(`${apiUrl}/questions`);
         if (!response.ok) {
             const errorData = await response.json();
             errorMessage.textContent = errorData?.userMessage || `HTTP error! status: ${response.status}`;
@@ -50,7 +50,7 @@ async function fetchQuestions() {
 // Event listener for the "Create New Question" button (on homepage)
 if (createQuestionBtn) {
     createQuestionBtn.addEventListener('click', () => {
-        window.location.href = '/questions/new.html';
+        window.location.href = '/QuesAnsApp/questions/new.html';
     });
 }
 
@@ -100,7 +100,7 @@ if (createQuestionForm) {
         };
 
         try {
-            const response = await fetch(`https://quesansapi.deno.dev/questions`, {
+            const response = await fetch(`${apiUrl}/questions`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
