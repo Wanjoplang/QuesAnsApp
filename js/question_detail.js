@@ -71,10 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 answerActions.classList.add('answer-actions');
                 const editButton = document.createElement('button');
                 editButton.textContent = 'Edit';
-                editButton.addEventListener('click', () => handleEditAnswer(index, answer)); // Implement this later
+                editButton.addEventListener('click', () => handleEditAnswer(index, answer));
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
-                deleteButton.addEventListener('click', () => handleDeleteAnswer(index)); // Implement this later
+                deleteButton.addEventListener('click', () => handleDeleteAnswer(index));
                 answerActions.appendChild(editButton);
                 answerActions.appendChild(deleteButton);
                 answerItem.appendChild(answerActions);
@@ -237,18 +237,73 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Edit Answer Functionality (Placeholders - Implement Later) ---
+    // --- Edit Answer Functionality ---
     function handleEditAnswer(answerIndex, answerData) {
-        console.log(`Edit answer at index ${answerIndex}:`, answerData);
-        // Implement the UI and logic to edit the answer here
+        const answerItem = answersListElement.children[answerIndex];
+        if (!answerItem) return;
+
+        const originalText = answerData.answerText;
+        answerItem.innerHTML = `
+            <textarea id="edit-answer-textarea-${answerIndex}" rows="3" cols="50">${originalText}</textarea>
+            <div class="edit-actions">
+                <button class="save-edit-answer-btn" data-index="${answerIndex}">Save</button>
+                <button class="cancel-edit-answer-btn" data-index="${answerIndex}">Cancel</button>
+                <div id="edit-answer-error-${answerIndex}" class="error-message" style="display:none;"></div>
+            </div>
+        `;
+
+        const saveButton = answerItem.querySelector('.save-edit-answer-btn');
+        const cancelButton = answerItem.querySelector('.cancel-edit-answer-btn');
+        const errorDiv = answerItem.querySelector(`#edit-answer-error-${answerIndex}`);
+
+        saveButton.addEventListener('click', () => saveEditedAnswer(answerIndex));
+        cancelButton.addEventListener('click', () => fetchQuestionDetails(questionId)); // Re-fetch to reset display
     }
 
-    // --- Delete Answer Functionality (Placeholders - Implement Later) ---
+    async function saveEditedAnswer(answerIndex) {
+        const answerItem = answersListElement.children[answerIndex];
+        if (!answerItem) return;
+
+        const editTextarea = answerItem.querySelector(`#edit-answer-textarea-${answerIndex}`);
+        const updatedAnswerText = editTextarea.value.trim();
+        const errorDiv = answerItem.querySelector(`#edit-answer-error-${answerIndex}`);
+
+        if (!updatedAnswerText) {
+            errorDiv.textContent = 'Answer text cannot be empty.';
+            errorDiv.style.display = 'block';
+            return;
+        }
+
+        errorDiv.style.display = 'none';
+
+        try {
+            const response = await fetch(`${apiUrl}/questions/${questionId}/answers/${answerIndex}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ answerText: updatedAnswerText }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error updating answer:', errorData);
+                errorDiv.textContent = errorData?.userMessage || 'Failed to update answer.';
+                errorDiv.style.display = 'block';
+            } else {
+                fetchQuestionDetails(questionId); // Re-fetch to update the displayed answer
+            }
+        } catch (error) {
+            console.error('Error updating answer:', error);
+            errorDiv.textContent = 'Failed to connect to the API to update answer.';
+            errorDiv.style.display = 'block';
+        }
+    }
+
+    // --- Delete Answer Functionality ---
     async function handleDeleteAnswer(answerIndex) {
         if (confirm('Are you sure you want to delete this answer?')) {
             try {
-                // Assuming your API endpoint for deleting an answer is like:
-                // DELETE /questions/:questionId/answers/:answerIndex (or with an actual answer ID)
                 const response = await fetch(`${apiUrl}/questions/${questionId}/answers/${answerIndex}`, {
                     method: 'DELETE',
                 });
