@@ -277,23 +277,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 errorDiv.textContent = errorData?.userMessage || 'Failed to submit edited answer.';
                 errorDiv.style.display = 'block';
             } else {
-                // Display success message
-                errorDiv.style.display = 'none';
-                const successDiv = answerItem.querySelector(`#edit-answer-error-${editingAnswerIndex}`); // Reusing error div for success
-                if (successDiv) {
-                    successDiv.textContent = 'Answer updated successfully!';
-                    successDiv.style.display = 'block';
-                    successDiv.classList.remove('error-message');
-                    successDiv.classList.add('success-message');
-                    setTimeout(() => {
-                        successDiv.style.display = 'none';
-                        editingAnswerIndex = -1;
-                        fetchQuestionDetails(questionId);
-                    }, 1500);
-                } else {
-                    editingAnswerIndex = -1;
-                    fetchQuestionDetails(questionId);
-                }
+                editingAnswerIndex = -1; // Reset editing index
+                fetchQuestionDetails(questionId); // Re-fetch to see the updated list
             }
         } catch (error) {
             console.error('Error submitting edited answer:', error);
