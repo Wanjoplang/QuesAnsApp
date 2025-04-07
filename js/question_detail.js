@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 editButton.addEventListener('click', () => handleEditAnswer(index, answer));
                 answerActions.appendChild(editButton);
                 answerItem.appendChild(answerActions);
+                answersListElement.appendChild(answerItem);
             });
         } else {
             const noAnswersItem = document.createElement('li');
