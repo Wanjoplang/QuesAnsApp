@@ -67,20 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 answerMeta.textContent = `Answered At: ${new Date(answer.createdAt).toLocaleString()}`;
                 answerItem.appendChild(answerMeta);
 
-                // Add Edit and Delete buttons for each answer
+                // Add Edit button for each answer
                 const answerActions = document.createElement('div');
                 answerActions.classList.add('answer-actions');
                 const editButton = document.createElement('button');
                 editButton.textContent = 'Edit';
                 editButton.addEventListener('click', () => handleEditAnswer(index, answer));
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.addEventListener('click', () => handleDeleteAnswer(answer.id));
                 answerActions.appendChild(editButton);
-                answerActions.appendChild(deleteButton);
                 answerItem.appendChild(answerActions);
-
-                answersListElement.appendChild(answerItem);
             });
         } else {
             const noAnswersItem = document.createElement('li');
@@ -287,29 +281,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Delete Answer Functionality ---
-    async function handleDeleteAnswer(answerId) {
-        if (confirm('Are you sure you want to delete this answer?')) {
-            try {
-                const response = await fetch(`${apiUrl}/questions/${questionId}/answers/${answerId}`, {
-                    method: 'DELETE',
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error deleting answer:', errorData);
-                    alert(errorData?.userMessage || 'Failed to delete answer.');
-                } else {
-                    alert('Answer deleted successfully!');
-                    fetchQuestionDetails(questionId); // Re-fetch to update the displayed answers
-                }
-            } catch (error) {
-                console.error('Error deleting answer:', error);
-                alert('Failed to connect to the API to delete answer.');
-            }
-        }
-    }
-
     // Fetch question details when the page loads
     fetchQuestionDetails(questionId);
+
+    // Event listener for submitting a new answer
+    addAnswerForm.addEventListener('submit', submitAnswer);
 });
