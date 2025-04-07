@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 answerItem.textContent = answer.answerText;
                 const answerMeta = document.createElement('p');
                 answerMeta.classList.add('meta');
-                answerMeta.textContent = `Answered At: ${new Date(answer.createdAt).toLocaleString()}`;
+                answerMeta.textContent = `Answered At: ${new Date().toLocaleString()}`;
                 answerItem.appendChild(answerMeta);
 
                 // Add Edit button for each answer
