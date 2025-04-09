@@ -67,11 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
             titleElement.textContent = question.title;
             titleElement.style.cursor = 'pointer';
             titleElement.addEventListener('click', () => showQuestionDetails(question.id));
-
             const tagsElement = document.createElement('p');
             tagsElement.classList.add('tags');
             tagsElement.textContent = question.tags ? `Tags: ${question.tags.join(', ')}` : 'No tags';
-
             questionItem.appendChild(titleElement);
             questionItem.appendChild(tagsElement);
             questionList.appendChild(questionItem);
@@ -116,11 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const questionBodyElement = questionDetailSection.querySelector('.question-body');
         const createdAtElement = questionDetailSection.querySelector('.created-at');
         const tagsContainerElement = questionDetailSection.querySelector('.tags-container');
-    
+
         questionTitleElement.textContent = question.title;
         questionBodyElement.textContent = question.body || '';
         createdAtElement.textContent = `${new Date(question.created_at).toLocaleDateString()} ${new Date(question.created_at).toLocaleTimeString()}`;
-    
+
         if (tagsContainerElement) {
             tagsContainerElement.innerHTML = '';
             if (question.tags && question.tags.length > 0) {
@@ -132,17 +130,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         }
-    
+
         questionDetailSection.dataset.questionId = question.id;
         if (questionsSection) questionsSection.style.display = 'none';
         questionDetailSection.style.display = 'block';
         if (answerForm) answerForm.style.display = 'block';
-    
-        // Ensure we are not creating a new button here
-        // const backButton = document.getElementById('back-to-questions-btn');
-        // if (backButton) {
-        //     backButton.addEventListener('click', goBackToQuestions);
-        // }
+
+        // Ensure the event listener is attached when the section is shown
+        const backButton = document.getElementById('back-to-questions-btn');
+        if (backButton) {
+            backButton.addEventListener('click', goBackToQuestions);
+        }
     }
 
     function goBackToQuestions() {
@@ -169,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.loadQuestions();
     }
 
+    // Attach the event listener once when the DOM is loaded
     if (backButton) {
         backButton.addEventListener('click', goBackToQuestions);
     }
