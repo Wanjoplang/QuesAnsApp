@@ -267,3 +267,20 @@ footer {
     font-weight: bold;
     color: white;
 }
+
+/* Ask a Question Button */
+#ask-question-btn {
+    display: none; /* Initially hidden */
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 15px;
+}
+
+#ask-question-btn:hover {
+    background-color: #0056b3;
+}
