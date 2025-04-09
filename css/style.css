@@ -42,23 +42,40 @@ header {
     font-size: 1em;
 }
 
-nav {
+.main-nav {
     display: flex;
     align-items: center;
 }
 
-nav span#username-display {
+.user-info {
+    display: flex;
+    align-items: center;
     margin-right: 1em;
+}
+
+.user-info svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.3em;
+    color: #757575;
+}
+
+.user-info span#username-display {
     font-weight: 500;
     color: #757575;
 }
 
-nav button {
+.auth-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.auth-buttons button {
     background-color: #e0e0e0;
     color: #333;
     border: none;
     padding: 0.7em 1.1em;
-    margin-left: 0.5em; /* Space between buttons */
+    margin-left: 0.5em;
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.95em;
@@ -67,20 +84,47 @@ nav button {
     transition: background-color 0.2s ease-in-out;
 }
 
-nav button svg {
+.auth-buttons button svg {
     width: 16px;
     height: 16px;
     margin-right: 0.3em;
-    color: #757575; /* Icon color */
+    color: #757575;
 }
 
-nav button span {
+.auth-buttons button span {
     /* Adjust spacing if needed */
 }
 
-nav button:hover {
+.auth-buttons button:hover {
     background-color: #9e9e9e;
     color: #fff;
+}
+
+.hamburger-menu {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5em;
+    display: none; /* Hidden by default on larger screens */
+}
+
+.hamburger-menu svg {
+    width: 24px;
+    height: 24px;
+    color: #333;
+}
+
+.mobile-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    /* Add styling for menu items here */
 }
 
 main {
@@ -346,7 +390,6 @@ footer {
 
 /* Username Display */
 #username-display {
-    margin-right: 10px;
     font-weight: 500;
     color: #757575;
 }
@@ -374,55 +417,47 @@ footer {
 @media (max-width: 768px) {
     header {
         padding: 1em;
-        flex-direction: column;
-        align-items: flex-start;
+        flex-wrap: wrap;
     }
 
-    .logo {
-        margin-bottom: 0.5em;
+    .main-nav {
+        width: 100%;
+        justify-content: space-between;
     }
 
-    nav {
-        margin-top: 0.5em;
+    .user-info {
+        margin-right: 0;
     }
 
-    nav button {
-        margin-left: 0;
-        margin-right: 0.5em; /* Adjust for stacked buttons */
+    .auth-buttons {
+        margin-left: auto;
     }
 
-    main {
-        padding: 15px;
-        margin: 15px auto;
+    .auth-buttons button {
+        margin-left: 0.3em;
     }
 
-    h2, h3 {
-        font-size: 1.3em;
+    .hamburger-menu {
+        display: block;
     }
 
-    .question-item h4 {
-        font-size: 1.1em;
-    }
-
-    input[type="text"],
-    input[type="password"],
-    textarea,
-    button {
-        font-size: 0.95em;
+    .auth-buttons {
+        display: none;
     }
 }
 
 @media (max-width: 576px) {
-    header h1 {
-        font-size: 1.3em;
-    }
-
     .logo {
         font-size: 1.5em;
     }
 
-    nav button {
+    .auth-buttons button {
         font-size: 0.9em;
-        padding: 0.6em 1em;
+        padding: 0.5em 0.8em;
+        margin-left: 0.2em;
+    }
+
+    .user-info span#username-display {
+        font-size: 0.9em;
     }
 }
