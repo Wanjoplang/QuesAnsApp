@@ -3,11 +3,11 @@
     window.loadQuestions = function() {
         const questionList = document.getElementById('question-list');
         const questionsSection = document.getElementById('questions-section');
+        const loadMoreQuestionsBtn = document.getElementById('load-more-questions-btn');
         let currentPage = 1;
         const questionsPerPage = 10;
         let hasMoreQuestions = true;
         let currentQuestions = [];
-        const loadMoreQuestionsBtn = document.getElementById('load-more-questions-btn');
 
         async function fetchQuestions(page) {
             if (!questionList || !loadMoreQuestionsBtn) return;
@@ -82,6 +82,8 @@
         function showQuestionDetails(questionId) {
             const questionDetailSection = document.getElementById('question-detail-section');
             const questionDetailsContainer = document.getElementById('question-details');
+            const answerForm = document.getElementById('answer-form');
+
             async function fetchQuestionDetails(questionId) {
                 if (!questionDetailsContainer || !questionDetailSection) return;
                 try {
@@ -113,8 +115,6 @@
                 const questionBodyElement = questionDetailSection.querySelector('.question-body');
                 const createdAtElement = questionDetailSection.querySelector('.created-at');
                 const tagsContainerElement = questionDetailSection.querySelector('.tags-container');
-                const answerForm = document.getElementById('answer-form');
-                const backButton = document.getElementById('back-to-questions-btn');
 
                 questionTitleElement.textContent = question.title;
                 questionBodyElement.textContent = question.body || '';
@@ -136,10 +136,6 @@
                 if (questionsSection) questionsSection.style.display = 'none';
                 questionDetailSection.style.display = 'block';
                 if (answerForm) answerForm.style.display = 'block';
-
-                if (backButton) {
-                    backButton.addEventListener('click', goBackToQuestions);
-                }
             }
             fetchQuestionDetails(questionId);
         }
@@ -159,15 +155,18 @@
             if (questionsSection) questionsSection.style.display = 'block';
             fetchQuestions(currentPage);
         }
-
-        const backButton = document.getElementById('back-to-questions-btn');
-        if (backButton) {
-            backButton.addEventListener('click', goBackToQuestions);
-        }
     };
 
-    // Call loadQuestions if the authToken is already present on DOMContentLoaded
-    if (localStorage.getItem('authToken')) {
-        window.loadQuestions();
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+        // Attach the "Back to Questions" button event listener once the DOM is ready
+        const backButton = document.getElementById('back-to-questions-btn');
+        if (backButton) {
+            backButton.addEventListener('click', window.loadQuestions); // Re-load questions on back
+        }
+
+        // Initial call to loadQuestions if the authToken is already present
+        if (localStorage.getItem('authToken')) {
+            window.loadQuestions();
+        }
+    });
 })();
