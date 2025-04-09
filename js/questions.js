@@ -163,17 +163,17 @@ document.addEventListener('DOMContentLoaded', () => {
     backButton.textContent = 'Back to Questions';
     backButton.addEventListener('click', goBackToQuestions);
     questionDetailSection.prepend(backButton);
-});
 
-// Make the loadQuestions function globally accessible
-window.loadQuestions = function() {
-    currentPage = 1;
-    currentQuestions = [];
-    hasMoreQuestions = true;
-    document.getElementById('question-list').innerHTML = ''; // Clear existing questions
-    const questionsSection = document.getElementById('questions-section');
-    if (questionsSection) {
-        questionsSection.style.display = 'block';
-    }
-    fetchQuestions(currentPage);
-};
+    // Make the loadQuestions function globally accessible
+    window.loadQuestions = function() {
+        currentPage = 1;
+        currentQuestions = [];
+        hasMoreQuestions = true;
+        document.getElementById('question-list').innerHTML = ''; // Clear existing questions
+        const questionsSection = document.getElementById('questions-section');
+        if (questionsSection) {
+            questionsSection.style.display = 'block';
+        }
+        fetchQuestions(currentPage);
+    };
+});
