@@ -472,6 +472,8 @@ footer {
     .hamburger-menu {
         display: block;
     }
+
+    /* DO NOT explicitly set display: none; for .mobile-menu here */
 }
 
 @media (max-width: 576px) {
