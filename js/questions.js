@@ -164,7 +164,7 @@
         }
 
         if (backButton) {
-            backButton.addEventListener('click', goBackToQuestions);
+            backButton.addEventListener('click', goBackToQuestions); // Corrected line
         }
 
         if (localStorage.getItem('authToken')) {
