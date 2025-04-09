@@ -117,7 +117,7 @@ header {
 
 /* Mobile Menu (Slide-in) */
 .mobile-menu {
-    /*display: none;  Initially hidden */
+    display: none; /* Initially hidden */
     position: fixed; /* Fixed position for slide-in effect */
     top: 0;
     right: -250px; /* Start off-screen */
@@ -133,6 +133,7 @@ header {
 }
 
 .mobile-menu.open {
+    display:block;
     right: 0; /* Slide into view */
 }
 
