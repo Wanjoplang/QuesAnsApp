@@ -103,4 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial UI update on page load
     updateAuthUI();
+
+    // Load questions if a token is already present
+    if (authToken) {
+        loadQuestions();
+    }
 });

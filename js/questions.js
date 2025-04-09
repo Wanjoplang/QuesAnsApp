@@ -135,8 +135,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchQuestionDetails(questionId);
     }
 
-    // Initial load of questions
-    fetchQuestions(currentPage);
+     // Initial load of questions - ONLY if a token is present
+     if (localStorage.getItem('authToken')) {
+        fetchQuestions(currentPage);
+    }
 
     // Add a "Back to Questions" button in the question detail section
     const backButton = document.createElement('button');
