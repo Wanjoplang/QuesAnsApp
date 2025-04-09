@@ -116,11 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const questionBodyElement = questionDetailSection.querySelector('.question-body');
         const createdAtElement = questionDetailSection.querySelector('.created-at');
         const tagsContainerElement = questionDetailSection.querySelector('.tags-container');
-
+    
         questionTitleElement.textContent = question.title;
         questionBodyElement.textContent = question.body || '';
         createdAtElement.textContent = `${new Date(question.created_at).toLocaleDateString()} ${new Date(question.created_at).toLocaleTimeString()}`;
-
+    
         if (tagsContainerElement) {
             tagsContainerElement.innerHTML = '';
             if (question.tags && question.tags.length > 0) {
@@ -132,11 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         }
-
+    
         questionDetailSection.dataset.questionId = question.id;
         if (questionsSection) questionsSection.style.display = 'none';
         questionDetailSection.style.display = 'block';
         if (answerForm) answerForm.style.display = 'block';
+    
+        // Ensure we are not creating a new button here
+        // const backButton = document.getElementById('back-to-questions-btn');
+        // if (backButton) {
+        //     backButton.addEventListener('click', goBackToQuestions);
+        // }
     }
 
     function goBackToQuestions() {
