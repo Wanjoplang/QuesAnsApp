@@ -5,10 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchAnswers(questionId) {
         try {
-            const response = await fetch(`https://quesansapi.deno.dev/questions/${questionId}/answers`);
+            const authToken = localStorage.getItem('authToken');
+            if (!authToken) {
+                console.error('Authentication token not found. Cannot fetch answers.');
+                answerListContainer.innerHTML = '<p class="error">You are not logged in. Please log in to see answers.</p>';
+                return;
+            }
+            const response = await fetch(`https://quesansapi.deno.dev/questions/${questionId}/answers`, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}` // Include the Authorization header
+                }
+            });
             const data = await response.json();
             if (response.ok) {
                 displayAnswers(data);
+            } else if (response.status === 401) {
+                console.error(`Failed to fetch answers for question ID ${questionId}: Unauthorized`);
+                answerListContainer.innerHTML = '<p class="error">You are not authorized to see answers for this question. Please log in.</p>';
             } else {
                 console.error(`Failed to fetch answers for question ID ${questionId}:`, data);
                 answerListContainer.innerHTML = '<p class="error">Failed to load answers.</p>';
