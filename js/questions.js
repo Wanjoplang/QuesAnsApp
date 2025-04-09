@@ -4,18 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const questionDetailSection = document.getElementById('question-detail-section');
     const questionsSection = document.getElementById('questions-section');
     const questionDetailsContainer = document.getElementById('question-details');
+    const answerForm = document.getElementById('answer-form');
+    const answerListContainer = document.getElementById('answer-list');
+    const backButton = document.getElementById('back-to-questions-btn');
 
     let currentPage = 1;
     const questionsPerPage = 10;
     let hasMoreQuestions = true;
     let currentQuestions = [];
 
-    // Function to fetch questions from the API
     async function fetchQuestions(page) {
+        if (!questionList || !loadMoreQuestionsBtn) return;
         try {
             const response = await fetch(`https://quesansapi.deno.dev/questions?page=${page}&limit=${questionsPerPage}`, {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Include token for authorized access
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 }
             });
             const data = await response.json();
@@ -54,15 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to display the list of questions in the DOM
     function displayQuestions(questions) {
+        if (!questionList) return;
         questionList.innerHTML = '';
         questions.forEach(question => {
             const questionItem = document.createElement('div');
             questionItem.classList.add('question-item');
             const titleElement = document.createElement('h4');
             titleElement.textContent = question.title;
-            titleElement.style.cursor = 'pointer'; // Indicate it's clickable
+            titleElement.style.cursor = 'pointer';
             titleElement.addEventListener('click', () => showQuestionDetails(question.id));
 
             const tagsElement = document.createElement('p');
@@ -75,24 +78,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Event listener for the "Load More" button
-    loadMoreQuestionsBtn.addEventListener('click', () => {
-        currentPage++;
-        fetchQuestions(currentPage);
-    });
+    if (loadMoreQuestionsBtn) {
+        loadMoreQuestionsBtn.addEventListener('click', () => {
+            currentPage++;
+            fetchQuestions(currentPage);
+        });
+    }
 
-    // Function to fetch and display details of a specific question
     async function fetchQuestionDetails(questionId) {
+        if (!questionDetailsContainer || !questionDetailSection) return;
         try {
             const response = await fetch(`https://quesansapi.deno.dev/questions/${questionId}`, {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Include token for authorized access
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 }
             });
             const data = await response.json();
             if (response.ok) {
                 displayQuestionDetails(data);
-                // Optionally, fetch and display answers here or in a separate function
                 window.fetchAnswers(questionId);
             } else if (response.status === 401) {
                 console.error('Unauthorized to fetch question details.');
@@ -107,86 +110,63 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to display the details of a question in the DOM
     function displayQuestionDetails(question) {
-        const questionTitleElement = document.querySelector('#question-detail-section .question-title');
-        const questionBodyElement = document.querySelector('#question-detail-section .question-body');
-        const createdAtElement = document.querySelector('#question-detail-section .created-at');
-        const tagsContainerElement = document.querySelector('#question-detail-section .tags-container');
+        if (!questionDetailsContainer || !questionDetailSection) return;
+        const questionTitleElement = questionDetailSection.querySelector('.question-title');
+        const questionBodyElement = questionDetailSection.querySelector('.question-body');
+        const createdAtElement = questionDetailSection.querySelector('.created-at');
+        const tagsContainerElement = questionDetailSection.querySelector('.tags-container');
 
         questionTitleElement.textContent = question.title;
         questionBodyElement.textContent = question.body || '';
         createdAtElement.textContent = `${new Date(question.created_at).toLocaleDateString()} ${new Date(question.created_at).toLocaleTimeString()}`;
 
-        tagsContainerElement.innerHTML = ''; // Clear existing tags
-        if (question.tags && question.tags.length > 0) {
-            question.tags.forEach(tag => {
-                const tagElement = document.createElement('span');
-                tagElement.classList.add('tag');
-                tagElement.textContent = tag;
-                tagsContainerElement.appendChild(tagElement);
-            });
+        if (tagsContainerElement) {
+            tagsContainerElement.innerHTML = '';
+            if (question.tags && question.tags.length > 0) {
+                question.tags.forEach(tag => {
+                    const tagElement = document.createElement('span');
+                    tagElement.classList.add('tag');
+                    tagElement.textContent = tag;
+                    tagsContainerElement.appendChild(tagElement);
+                });
+            }
         }
 
-        document.getElementById('question-detail-section').dataset.questionId = question.id;
-        questionsSection.style.display = 'none';
+        questionDetailSection.dataset.questionId = question.id;
+        if (questionsSection) questionsSection.style.display = 'none';
         questionDetailSection.style.display = 'block';
-        document.getElementById('answer-form').style.display = 'block';
-
-        // Optionally, update the goBackToQuestions function to use the new button ID
-        const backButton = document.getElementById('back-to-questions-btn');
-        if (backButton) {
-            backButton.addEventListener('click', goBackToQuestions);
-        }
+        if (answerForm) answerForm.style.display = 'block';
     }
 
-    // Function to navigate back to the list of questions
     function goBackToQuestions() {
+        if (!questionsSection || !questionDetailSection || !answerForm || !answerListContainer) return;
         questionsSection.style.display = 'block';
         questionDetailSection.style.display = 'none';
-        document.getElementById('answer-form').style.display = 'none'; // Hide the answer form
-        document.getElementById('answer-list').innerHTML = ''; // Clear previous answers
+        answerForm.style.display = 'none';
+        answerListContainer.innerHTML = '';
     }
 
-    // Make the question title clickable to show details
-    function attachQuestionTitleListeners() {
-        const questionTitles = document.querySelectorAll('#question-list h4');
-        questionTitles.forEach(title => {
-            title.addEventListener('click', () => {
-                const questionId = title.parentElement ? title.parentElement.dataset.questionId : null;
-                if (questionId) {
-                    showQuestionDetails(questionId);
-                }
-            });
-        });
-    }
-
-    // Function to show question details by ID
     function showQuestionDetails(questionId) {
         fetchQuestionDetails(questionId);
     }
 
-    // Initial load of questions - ONLY if a token is present
     if (localStorage.getItem('authToken')) {
-        window.loadQuestions(); // Call the global loadQuestions function
+        window.loadQuestions = () => {
+            currentPage = 1;
+            currentQuestions = [];
+            hasMoreQuestions = true;
+            if (questionList) questionList.innerHTML = '';
+            if (questionsSection) questionsSection.style.display = 'block';
+            fetchQuestions(currentPage);
+        };
+        window.loadQuestions();
     }
 
-    // Add a "Back to Questions" button in the question detail section
-    const backButton = document.createElement('button');
-    backButton.textContent = 'Back to Questions';
-    backButton.addEventListener('click', goBackToQuestions);
-    questionDetailSection.prepend(backButton);
-
-    // Make the loadQuestions function globally accessible
-    window.loadQuestions = function() {
-        currentPage = 1;
-        currentQuestions = [];
-        hasMoreQuestions = true;
-        document.getElementById('question-list').innerHTML = ''; // Clear existing questions
-        const questionsSection = document.getElementById('questions-section');
-        if (questionsSection) {
-            questionsSection.style.display = 'block';
-        }
-        fetchQuestions(currentPage);
-    };
+    if (backButton) {
+        backButton.addEventListener('click', goBackToQuestions);
+    }
 });
+
+// Make the loadQuestions function globally accessible (defined inside the DOMContentLoaded for authToken check)
+// window.loadQuestions = () => {};
