@@ -117,7 +117,7 @@ header {
 
 /* Mobile Menu (Slide-in) */
 .mobile-menu {
-    display: block; /* Initially hidden */
+    display: none; /* Initially hidden */
     position: fixed; /* Fixed position for slide-in effect */
     top: 0;
     right: -250px; /* Start off-screen */
@@ -484,6 +484,7 @@ footer {
     .mobile-menu {
         width: 200px; /* Adjust width for smaller screens */
         padding: 1.5em;
+        display:block;
     }
 
     .mobile-menu .auth-buttons button {
