@@ -3,30 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Q&A</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Q&A Application</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header>
-        <h1>Q&A</h1>
-        <button id="create-question-btn">Create New Question</button>
+        <h1>Q&A Platform</h1>
+        <nav>
+            <button id="login-btn">Login</button>
+            <button id="logout-btn" style="display: none;">Logout</button>
+        </nav>
     </header>
 
     <main>
-        <div id="question-list-container">
-            <h2>Questions</h2>
-            <div id="loading-message" style="display:none;">Loading questions...</div>
-            <div id="error-message" style="display:none; color: red;"></div>
-            <ul id="question-list">
-                </ul>
-            <div id="no-questions-message" style="display:none;">No questions available.</div>
+        <div id="login-section" style="display: none;">
+            <h2>Login</h2>
+            <form id="login-form">
+                <div>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">Login</button>
+                <p id="login-error" style="color: red; display: none;"></p>
+            </form>
         </div>
+
+        <div id="questions-section">
+            <h2>Questions</h2>
+            <div id="question-list">
+                </div>
+            <button id="load-more-questions-btn" style="display: none;">Load More</button>
+        </div>
+
+        <div id="question-detail-section" style="display: none;">
+            <h2>Question Details</h2>
+            <div id="question-details">
+                </div>
+            <h3>Add New Answer</h3>
+            <form id="answer-form" style="display: none;">
+                <div>
+                    <label for="answer-body">Your Answer:</label>
+                    <textarea id="answer-body" name="body" rows="5" required></textarea>
+                </div>
+                <button type="submit">Submit Answer</button>
+                <p id="answer-error" style="color: red; display: none;"></p>
+            </form>
+        </div>
+
+        <div id="create-question-section" style="display: none;">
+            <h2>Ask a Question</h2>
+            <form id="create-question-form">
+                <div>
+                    <label for="question-title">Title:</label>
+                    <input type="text" id="question-title" name="title" required>
+                </div>
+                <div>
+                    <label for="question-body">Body (optional):</label>
+                    <textarea id="question-body" name="body" rows="5"></textarea>
+                </div>
+                <div>
+                    <label for="question-tags">Tags (comma-separated, optional):</label>
+                    <input type="text" id="question-tags" name="tags">
+                </div>
+                <button type="submit">Ask Question</button>
+                <p id="create-question-error" style="color: red; display: none;"></p>
+            </form>
+        </div>
+
+        <button id="ask-question-btn" style="display: none;">Ask a Question</button>
     </main>
 
     <footer>
-        <p>&copy; 2025 My Q&A App</p>
+        <p>&copy; 2025 Q&A Platform</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/answers.js"></script>
 </body>
 </html>
