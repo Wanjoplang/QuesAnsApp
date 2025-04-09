@@ -6,7 +6,7 @@
     const questionDetailSection = document.getElementById('question-detail-section');
     const answerForm = document.getElementById('answer-form');
     const answerListContainer = document.getElementById('answer-list');
-    const questionDetailsContainer = document.querySelector('#question-detail-section .question-details-container'); // Declare here
+    const createQuestionSection = document.getElementById('create-question-section'); // Get create question section
 
     let currentPage = 1;
     const questionsPerPage = 10;
@@ -77,6 +77,8 @@
     }
 
     function showQuestionDetails(questionId) {
+        const questionDetailsContainer = document.querySelector('#question-detail-section .question-details-container');
+
         async function fetchQuestionDetails(questionId) {
             if (!questionDetailsContainer || !questionDetailSection) return;
             try {
@@ -138,6 +140,7 @@
         if (questionDetailSection) questionDetailSection.style.display = 'none';
         if (answerForm) answerForm.style.display = 'none';
         if (answerListContainer) answerListContainer.innerHTML = '';
+        if (createQuestionSection) createQuestionSection.style.display = 'none'; // Ensure create form is hidden
         window.loadQuestions(); // Reload questions on going back
     }
 
@@ -147,6 +150,8 @@
         currentQuestions = [];
         fetchQuestions(currentPage);
         if (questionsSection) questionsSection.style.display = 'block';
+        if (createQuestionSection) createQuestionSection.style.display = 'none'; // Ensure create form is hidden
+        if (questionDetailSection) questionDetailSection.style.display = 'none'; // Ensure detail section is hidden
     };
 
     document.addEventListener('DOMContentLoaded', () => {

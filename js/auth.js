@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
     const askQuestionBtn = document.getElementById('ask-question-btn');
     const usernameDisplay = document.getElementById('username-display');
+    const createQuestionSection = document.getElementById('create-question-section'); // Get create question section
+    const questionDetailSection = document.getElementById('question-detail-section'); // Get detail section
 
     const authToken = localStorage.getItem('authToken');
     if (authToken) {
@@ -16,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.style.display = 'block';
         loginBtn.style.display = 'none';
         askQuestionBtn.style.display = 'block';
+        createQuestionSection.style.display = 'none'; // Ensure create form is hidden on load
+        questionDetailSection.style.display = 'none'; // Ensure detail section is hidden on load
         const storedUsername = localStorage.getItem('username');
         if (storedUsername) {
             usernameDisplay.textContent = storedUsername;
@@ -26,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.style.display = 'none';
         loginBtn.style.display = 'block';
         askQuestionBtn.style.display = 'none';
+        createQuestionSection.style.display = 'none'; // Ensure create form is hidden on load
+        questionDetailSection.style.display = 'none'; // Ensure detail section is hidden on load
     }
 
     if (loginForm) {
@@ -55,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     logoutBtn.style.display = 'block';
                     loginBtn.style.display = 'none';
                     askQuestionBtn.style.display = 'block';
+                    createQuestionSection.style.display = 'none'; // Ensure create form is hidden on login
+                    questionDetailSection.style.display = 'none'; // Ensure detail section is hidden on login
                     loginError.style.display = 'none';
                     usernameDisplay.textContent = username;
                     window.loadQuestions();
@@ -79,6 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
             logoutBtn.style.display = 'none';
             loginBtn.style.display = 'block';
             askQuestionBtn.style.display = 'none';
+            createQuestionSection.style.display = 'none'; // Ensure create form is hidden on logout
+            questionDetailSection.style.display = 'none'; // Ensure detail section is hidden on logout
             usernameDisplay.textContent = '';
         });
     }
