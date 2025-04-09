@@ -1,3 +1,4 @@
+// js/auth.js
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const loginSection = document.getElementById('login-section');
@@ -6,9 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginBtn = document.getElementById('login-btn');
     const logoutBtn = document.getElementById('logout-btn');
     const askQuestionBtn = document.getElementById('ask-question-btn');
-    const usernameDisplay = document.getElementById('username-display'); // Get the new display element
+    const usernameDisplay = document.getElementById('username-display');
 
-    // Check for existing token on page load
     const authToken = localStorage.getItem('authToken');
     if (authToken) {
         loginSection.style.display = 'none';
@@ -16,7 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.style.display = 'block';
         loginBtn.style.display = 'none';
         askQuestionBtn.style.display = 'block';
-        // Optionally, try to fetch user info here to display username if not stored
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            usernameDisplay.textContent = storedUsername;
+        }
     } else {
         loginSection.style.display = 'block';
         questionsSection.style.display = 'none';
@@ -46,14 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('username', username); // Store username
                     loginSection.style.display = 'none';
                     questionsSection.style.display = 'block';
                     logoutBtn.style.display = 'block';
                     loginBtn.style.display = 'none';
                     askQuestionBtn.style.display = 'block';
                     loginError.style.display = 'none';
-                    usernameDisplay.textContent = username; // Display the username
-                    window.loadQuestions(); // Load questions after successful login
+                    usernameDisplay.textContent = username;
+                    window.loadQuestions();
                 } else {
                     loginError.textContent = data.userMessage || 'Login failed. Please check your credentials.';
                     loginError.style.display = 'block';
@@ -69,12 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             localStorage.removeItem('authToken');
+            localStorage.removeItem('username'); // Remove username
             loginSection.style.display = 'block';
             questionsSection.style.display = 'none';
             logoutBtn.style.display = 'none';
             loginBtn.style.display = 'block';
             askQuestionBtn.style.display = 'none';
-            usernameDisplay.textContent = ''; // Clear the username display
+            usernameDisplay.textContent = '';
         });
     }
 });

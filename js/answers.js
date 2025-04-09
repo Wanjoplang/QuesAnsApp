@@ -1,3 +1,4 @@
+// js/answers.js
 document.addEventListener('DOMContentLoaded', () => {
     const answerForm = document.getElementById('answer-form');
     const answerListContainer = document.getElementById('answer-list');
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const response = await fetch(`https://quesansapi.deno.dev/questions/${questionId}/answers`, {
                 headers: {
-                    'Authorization': `Bearer ${authToken}` // Include the Authorization header
+                    'Authorization': `Bearer ${authToken}`
                 }
             });
             const data = await response.json();

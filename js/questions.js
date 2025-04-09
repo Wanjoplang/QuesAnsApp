@@ -1,3 +1,4 @@
+// js/questions.js
 (function() { // Immediately Invoked Function Expression (IIFE) to contain scope
     // Define window.loadQuestions at the top level
     window.loadQuestions = function() {
@@ -59,10 +60,10 @@
             questions.forEach(question => {
                 const questionItem = document.createElement('div');
                 questionItem.classList.add('question-item');
+                questionItem.dataset.questionId = question.id; // Add data-question-id
                 const titleElement = document.createElement('h4');
                 titleElement.textContent = question.title;
                 titleElement.style.cursor = 'pointer';
-                titleElement.addEventListener('click', () => showQuestionDetails(question.id));
                 const tagsElement = document.createElement('p');
                 tagsElement.classList.add('tags');
                 tagsElement.textContent = question.tags ? `Tags: ${question.tags.join(', ')}` : 'No tags';
@@ -149,6 +150,7 @@
             if (questionDetailSection) questionDetailSection.style.display = 'none';
             if (answerForm) answerForm.style.display = 'none';
             if (answerListContainer) answerListContainer.innerHTML = '';
+            window.loadQuestions(); // Reload questions on going back
         }
 
         if (localStorage.getItem('authToken')) {
@@ -158,13 +160,25 @@
     };
 
     document.addEventListener('DOMContentLoaded', () => {
-        // Attach the "Back to Questions" button event listener once the DOM is ready
+        const questionList = document.getElementById('question-list');
         const backButton = document.getElementById('back-to-questions-btn');
-        if (backButton) {
-            backButton.addEventListener('click', window.loadQuestions); // Re-load questions on back
+
+        if (questionList) {
+            questionList.addEventListener('click', (event) => {
+                const titleElement = event.target.closest('h4');
+                if (titleElement) {
+                    const questionItem = titleElement.closest('.question-item');
+                    if (questionItem && questionItem.dataset.questionId) {
+                        showQuestionDetails(questionItem.dataset.questionId);
+                    }
+                }
+            });
         }
 
-        // Initial call to loadQuestions if the authToken is already present
+        if (backButton) {
+            backButton.addEventListener('click', goBackToQuestions);
+        }
+
         if (localStorage.getItem('authToken')) {
             window.loadQuestions();
         }
