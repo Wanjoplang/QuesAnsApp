@@ -3,42 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Q&A Application</title>
+    <title>Q&A Community</title> <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header>
-        <h1>Q&A Platform</h1>
-        <nav>
+        <h1>Q&A Community</h1> <nav>
             <span id="username-display" style="margin-right: 10px; font-weight: bold;"></span>
-            <button id="login-btn">Login</button>
-            <button id="logout-btn" style="display: none;">Logout</button>
-        </nav>
+            <button id="login-btn">Log In</button> <button id="logout-btn" style="display: none;">Log Out</button> </nav>
     </header>
 
     <main>
         <div id="login-section" style="display: none;">
-            <h2>Login</h2>
-            <form id="login-form">
+            <h2>Welcome Back!</h2> <form id="login-form">
                 <div>
                     <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
+                    <input type="text" id="username" name="username" placeholder="Your username" required> </div>
                 <div>
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit">Login</button>
-                <p id="login-error" style="color: red; display: none;"></p>
-            </form>
+                    <input type="password" id="password" name="password" placeholder="Your password" required> </div>
+                <button type="submit">Sign In</button> <p id="login-error" style="color: #d32f2f; display: none;">Invalid credentials. Please try again.</p> </form>
         </div>
 
         <div id="questions-section">
-            <h2>Questions</h2>
-            <div id="question-list">
+            <h2>Explore Questions</h2> <div id="question-list">
                 </div>
-            <button id="load-more-questions-btn" style="display: none;">Load More</button>
-        </div>
+            <button id="load-more-questions-btn" style="display: none;">Load More Questions</button> </div>
 
         <div id="question-detail-section" style="display: none;">
             <div class="question-details-container">
@@ -51,48 +43,31 @@
             </div>
 
             <div class="answers-section">
-                <h3>Answers</h3>
-                <div id="answer-list">
+                <h3>Answers from the Community</h3> <div id="answer-list">
                     </div>
-                <h3 style="margin-top: 20px;">Your Answer</h3>
-                <form id="answer-form">
+                <h3 style="margin-top: 20px;">Share Your Answer</h3> <form id="answer-form">
                     <div>
                         <label for="answer-body">Your Answer:</label>
-                        <textarea id="answer-body" name="body" rows="5" required></textarea>
-                    </div>
-                    <button type="submit">Submit Answer</button>
-                    <p id="answer-error" style="color: red; display: none;"></p>
-                </form>
+                        <textarea id="answer-body" name="body" rows="5" placeholder="Type your answer here..." required></textarea> </div>
+                    <button type="submit">Post Your Answer</button> <p id="answer-error" style="color: #d32f2f; display: none;">Failed to submit answer. Please try again.</p> </form>
             </div>
-            <button id="back-to-questions-btn">Back to Questions</button>
-        </div>
+            <button id="back-to-questions-btn">Back to All Questions</button> </div>
 
         <div id="create-question-section" style="display: none;">
-            <h2>Ask a Question</h2>
-            <form id="create-question-form">
+            <h2>Ask a New Question</h2> <form id="create-question-form">
                 <div>
-                    <label for="question-title">Title:</label>
-                    <input type="text" id="question-title" name="title" required>
-                </div>
+                    <label for="question-title">Question Title:</label> <input type="text" id="question-title" name="title" placeholder="What is your question?" required> </div>
                 <div>
-                    <label for="question-body">Body (optional):</label>
-                    <textarea id="question-body" name="body" rows="5"></textarea>
-                </div>
+                    <label for="question-body">Details (Optional):</label> <textarea id="question-body" name="body" rows="5" placeholder="Provide more context if needed..."></textarea> </div>
                 <div>
-                    <label for="question-tags">Tags (comma-separated, optional):</label>
-                    <input type="text" id="question-tags" name="tags">
-                </div>
-                <button type="submit">Submit your Question</button>
-                <p id="create-question-error" style="color: red; display: none;"></p>
-            </form>
+                    <label for="question-tags">Tags (Optional, comma-separated):</label> <input type="text" id="question-tags" name="tags" placeholder="e.g., javascript, react, beginner"> </div>
+                <button type="submit">Submit Your Question</button> <p id="create-question-error" style="color: #d32f2f; display: none;">Failed to ask question. Please try again.</p> </form>
         </div>
 
-        <button id="ask-question-btn" style="display: none;">Ask a Question</button>
-    </main>
+        <button id="ask-question-btn" style="display: none;">Ask a Question</button> </main>
 
     <footer>
-        <p>&copy; 2025 Q&A Platform</p>
-    </footer>
+        <p>&copy; 2025 Q&A Community</p> </footer>
 
     <script src="js/app.js"></script>
     <script src="js/auth.js"></script>
