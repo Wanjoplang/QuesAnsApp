@@ -76,6 +76,9 @@
     }
 
     function showQuestionDetails(questionId) {
+        // Declare questionDetailsContainer here
+        const questionDetailsContainer = document.querySelector('#question-detail-section .question-details-container');
+
         async function fetchQuestionDetails(questionId) {
             if (!questionDetailsContainer || !questionDetailSection) return;
             try {
@@ -164,7 +167,7 @@
         }
 
         if (backButton) {
-            backButton.addEventListener('click', goBackToQuestions); // Corrected line
+            backButton.addEventListener('click', goBackToQuestions);
         }
 
         if (localStorage.getItem('authToken')) {
