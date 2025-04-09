@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const createQuestionForm = document.getElementById('create-question-form');
     const createQuestionError = document.getElementById('create-question-error');
     const questionsSection = document.getElementById('questions-section');
+    const usernameDisplay = document.getElementById('username-display'); // Get the display element
+
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+        usernameDisplay.textContent = storedUsername; // Display stored username
+    }
 
     // Event listener for the "Ask a Question" button to show the create question form
     if (askQuestionBtn) {
