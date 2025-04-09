@@ -13,13 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch questions from the API
     async function fetchQuestions(page) {
         try {
-            const headers = {}; // Initialize an empty headers object
-            const authToken = localStorage.getItem('authToken');
-            if (authToken) {
-                headers['Authorization'] = `Bearer ${authToken}`; // Include token if available
-            }
             const response = await fetch(`https://quesansapi.deno.dev/questions?page=${page}&limit=${questionsPerPage}`, {
-                headers: headers
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Include token for authorized access
+                }
             });
             const data = await response.json();
 
@@ -37,6 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     hasMoreQuestions = false;
                     loadMoreQuestionsBtn.style.display = 'none';
                 }
+            } else if (response.status === 401) {
+                console.error('Unauthorized to fetch questions.');
+                questionList.innerHTML = '<p class="error">You are not authorized to view questions. Please log in.</p>';
+                loadMoreQuestionsBtn.style.display = 'none';
+                hasMoreQuestions = false;
+                // Optionally redirect to login page if not logged in
             } else {
                 console.error('Failed to fetch questions:', data);
                 questionList.innerHTML = '<p class="error">Failed to load questions.</p>';
@@ -81,17 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch and display details of a specific question
     async function fetchQuestionDetails(questionId) {
         try {
-            const headers = {};
-            const authToken = localStorage.getItem('authToken');
-            if (authToken) {
-                headers['Authorization'] = `Bearer ${authToken}`;
-            }
             const response = await fetch(`https://quesansapi.deno.dev/questions/${questionId}`, {
-                headers: headers
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Include token for authorized access
+                }
             });
             const data = await response.json();
             if (response.ok) {
                 displayQuestionDetails(data);
+                // Optionally, fetch and display answers here or in a separate function
                 window.fetchAnswers(questionId);
             } else if (response.status === 401) {
                 console.error('Unauthorized to fetch question details.');
@@ -119,18 +120,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
             </div>
         `;
+        // Set the question ID as a data attribute
         document.getElementById('question-detail-section').dataset.questionId = question.id;
         questionsSection.style.display = 'none';
         questionDetailSection.style.display = 'block';
-        document.getElementById('answer-form').style.display = 'block';
+        document.getElementById('answer-form').style.display = 'block'; // Show the answer form
     }
 
     // Function to navigate back to the list of questions
     function goBackToQuestions() {
         questionsSection.style.display = 'block';
         questionDetailSection.style.display = 'none';
-        document.getElementById('answer-form').style.display = 'none';
-        document.getElementById('answer-list').innerHTML = '';
+        document.getElementById('answer-form').style.display = 'none'; // Hide the answer form
+        document.getElementById('answer-list').innerHTML = ''; // Clear previous answers
     }
 
     // Make the question title clickable to show details
@@ -151,8 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchQuestionDetails(questionId);
     }
 
-    // Initial load of questions - NOW load regardless of token
-    fetchQuestions(currentPage);
+    // Initial load of questions - ONLY if a token is present
+    if (localStorage.getItem('authToken')) {
+        window.loadQuestions(); // Call the global loadQuestions function
+    }
 
     // Add a "Back to Questions" button in the question detail section
     const backButton = document.createElement('button');
@@ -165,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPage = 1;
         currentQuestions = [];
         hasMoreQuestions = true;
-        document.getElementById('question-list').innerHTML = '';
+        document.getElementById('question-list').innerHTML = ''; // Clear existing questions
         const questionsSection = document.getElementById('questions-section');
         if (questionsSection) {
             questionsSection.style.display = 'block';
