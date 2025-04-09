@@ -7,6 +7,7 @@
     const answerForm = document.getElementById('answer-form');
     const answerListContainer = document.getElementById('answer-list');
     const createQuestionSection = document.getElementById('create-question-section'); // Get create question section
+    const askQuestionBtn = document.getElementById('ask-question-btn'); // Get the ask question button
 
     let currentPage = 1;
     const questionsPerPage = 10;
@@ -74,6 +75,10 @@
             questionItem.appendChild(tagsElement);
             questionList.appendChild(questionItem);
         });
+        // Show the Ask a Question button when the question list is displayed
+        if (askQuestionBtn) {
+            askQuestionBtn.style.display = 'block';
+        }
     }
 
     function showQuestionDetails(questionId) {
@@ -131,6 +136,10 @@
             if (questionsSection) questionsSection.style.display = 'none';
             questionDetailSection.style.display = 'block';
             if (answerForm) answerForm.style.display = 'block';
+            // Hide the Ask a Question button when viewing question details
+            if (askQuestionBtn) {
+                askQuestionBtn.style.display = 'none';
+            }
         }
         fetchQuestionDetails(questionId);
     }
@@ -141,6 +150,10 @@
         if (answerForm) answerForm.style.display = 'none';
         if (answerListContainer) answerListContainer.innerHTML = '';
         if (createQuestionSection) createQuestionSection.style.display = 'none'; // Ensure create form is hidden
+        // Show the Ask a Question button when going back to the question list
+        if (askQuestionBtn) {
+            askQuestionBtn.style.display = 'block';
+        }
         window.loadQuestions(); // Reload questions on going back
     }
 
@@ -152,6 +165,10 @@
         if (questionsSection) questionsSection.style.display = 'block';
         if (createQuestionSection) createQuestionSection.style.display = 'none'; // Ensure create form is hidden
         if (questionDetailSection) questionDetailSection.style.display = 'none'; // Ensure detail section is hidden
+        // Show the Ask a Question button when the question list is loaded
+        if (askQuestionBtn) {
+            askQuestionBtn.style.display = 'block';
+        }
     };
 
     document.addEventListener('DOMContentLoaded', () => {
