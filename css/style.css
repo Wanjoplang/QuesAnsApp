@@ -473,17 +473,6 @@ footer {
         display: block;
     }
 
-    .mobile-menu {
-        width: 200px; /* Adjust width for smaller screens */
-        padding: 1.5em;
-        /* display:block; */
-    }
-
-    .mobile-menu .auth-buttons button {
-        font-size: 0.95em;
-        padding: 0.7em 1em;
-    }
-
     /* DO NOT explicitly set display: none; for .mobile-menu here */
 }
 
