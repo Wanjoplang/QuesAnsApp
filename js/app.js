@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainNav = document.querySelector('.main-nav');
     const authButtons = document.querySelector('.auth-buttons');
     const userInfo = document.querySelector('.user-info');
+    const overlay = document.createElement('div'); // Create overlay element
+    overlay.classList.add('overlay');
+    document.body.appendChild(overlay);
 
     // Function to show a section and hide others
     function showSection(sectionId) {
@@ -134,16 +137,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Hamburger Menu Logic
-    if (hamburgerMenu && mobileMenu && mainNav && authButtons) {
+    if (hamburgerMenu && mobileMenu && mainNav && authButtons && overlay) {
         hamburgerMenu.addEventListener('click', () => {
             mobileMenu.classList.toggle('open');
-            mainNav.classList.toggle('open'); // You can style based on this class if needed
+            overlay.classList.toggle('open');
+            mainNav.classList.toggle('mobile-menu-active'); // Optional: for styling main nav when menu is open
 
             // Move auth buttons to mobile menu on open, move back on close
             if (mobileMenu.classList.contains('open')) {
                 mobileMenu.appendChild(authButtons);
             } else {
-                mainNav.insertBefore(authButtons, hamburgerMenu); // Insert back before hamburger
+                // Check if authButtons is still a child of mobileMenu before moving back
+                if (authButtons.parentNode === mobileMenu) {
+                    mainNav.insertBefore(authButtons, hamburgerMenu);
+                }
+            }
+        });
+
+        // Close menu when overlay is clicked
+        overlay.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+            overlay.classList.remove('open');
+            mainNav.classList.remove('mobile-menu-active');
+            // Move auth buttons back if they are in the mobile menu
+            if (authButtons.parentNode === mobileMenu) {
+                mainNav.insertBefore(authButtons, hamburgerMenu);
             }
         });
     }
