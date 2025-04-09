@@ -6,6 +6,7 @@
     const questionDetailSection = document.getElementById('question-detail-section');
     const answerForm = document.getElementById('answer-form');
     const answerListContainer = document.getElementById('answer-list');
+    const questionDetailsContainer = document.querySelector('#question-detail-section .question-details-container'); // Declare here
 
     let currentPage = 1;
     const questionsPerPage = 10;
@@ -76,9 +77,6 @@
     }
 
     function showQuestionDetails(questionId) {
-        // Declare questionDetailsContainer here
-        const questionDetailsContainer = document.querySelector('#question-detail-section .question-details-container');
-
         async function fetchQuestionDetails(questionId) {
             if (!questionDetailsContainer || !questionDetailSection) return;
             try {
