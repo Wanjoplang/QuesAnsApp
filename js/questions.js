@@ -13,7 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch questions from the API
     async function fetchQuestions(page) {
         try {
-            const response = await fetch(`https://quesansapi.deno.dev/questions?page=${page}&limit=${questionsPerPage}`);
+            const response = await fetch(`https://quesansapi.deno.dev/questions?page=${page}&limit=${questionsPerPage}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Include token for authorized access
+                }
+            });
             const data = await response.json();
 
             if (response.ok) {
@@ -30,6 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     hasMoreQuestions = false;
                     loadMoreQuestionsBtn.style.display = 'none';
                 }
+            } else if (response.status === 401) {
+                console.error('Unauthorized to fetch questions.');
+                questionList.innerHTML = '<p class="error">You are not authorized to view questions. Please log in.</p>';
+                loadMoreQuestionsBtn.style.display = 'none';
+                hasMoreQuestions = false;
+                // Optionally redirect to login page if not logged in
             } else {
                 console.error('Failed to fetch questions:', data);
                 questionList.innerHTML = '<p class="error">Failed to load questions.</p>';
@@ -74,12 +84,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch and display details of a specific question
     async function fetchQuestionDetails(questionId) {
         try {
-            const response = await fetch(`https://quesansapi.deno.dev/questions/${questionId}`);
+            const response = await fetch(`https://quesansapi.deno.dev/questions/${questionId}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Include token for authorized access
+                }
+            });
             const data = await response.json();
             if (response.ok) {
                 displayQuestionDetails(data);
                 // Optionally, fetch and display answers here or in a separate function
-                fetchAnswers(questionId);
+                window.fetchAnswers(questionId);
+            } else if (response.status === 401) {
+                console.error('Unauthorized to fetch question details.');
+                questionDetailsContainer.innerHTML = '<p class="error">You are not authorized to view question details. Please log in.</p>';
             } else {
                 console.error(`Failed to fetch question details for ID ${questionId}:`, data);
                 questionDetailsContainer.innerHTML = '<p class="error">Failed to load question details.</p>';
@@ -103,7 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
             </div>
         `;
-        // Show the question detail section and hide the questions list
+        // Set the question ID as a data attribute
+        document.getElementById('question-detail-section').dataset.questionId = question.id;
         questionsSection.style.display = 'none';
         questionDetailSection.style.display = 'block';
         document.getElementById('answer-form').style.display = 'block'; // Show the answer form
@@ -135,9 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchQuestionDetails(questionId);
     }
 
-     // Initial load of questions - ONLY if a token is present
-     if (localStorage.getItem('authToken')) {
-        fetchQuestions(currentPage);
+    // Initial load of questions - ONLY if a token is present
+    if (localStorage.getItem('authToken')) {
+        window.loadQuestions(); // Call the global loadQuestions function
     }
 
     // Add a "Back to Questions" button in the question detail section
@@ -147,8 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
     questionDetailSection.prepend(backButton);
 });
 
-// Function to be called from auth.js after successful login
-function loadQuestions() {
+// Make the loadQuestions function globally accessible
+window.loadQuestions = function() {
     currentPage = 1;
     currentQuestions = [];
     hasMoreQuestions = true;
@@ -158,4 +176,4 @@ function loadQuestions() {
         questionsSection.style.display = 'block';
     }
     fetchQuestions(currentPage);
-}
+};
