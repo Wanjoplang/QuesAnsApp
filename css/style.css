@@ -473,6 +473,10 @@ footer {
         display: block;
     }
 
+    .mobile-menu{
+        display:block;
+    }
+
     /* DO NOT explicitly set display: none; for .mobile-menu here */
 }
 
