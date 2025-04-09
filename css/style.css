@@ -472,6 +472,10 @@ footer {
     .hamburger-menu {
         display: block;
     }
+
+    .mobile-menu{
+        display:block;
+    }
     
 
     /* DO NOT explicitly set display: none; for .mobile-menu here */
@@ -485,7 +489,6 @@ footer {
     .mobile-menu {
         width: 200px; /* Adjust width for smaller screens */
         padding: 1.5em;
-        display:block;
     }
 
     .mobile-menu .auth-buttons button {
@@ -501,6 +504,10 @@ footer {
 
     .user-info span#username-display {
         font-size: 0.9em;
+    }
+
+    .mobile-menu{
+        display:block;
     }
 }
 
