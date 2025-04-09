@@ -109,22 +109,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to display the details of a question in the DOM
     function displayQuestionDetails(question) {
-        questionDetailsContainer.innerHTML = `
-            <h3>${question.title}</h3>
-            ${question.body ? `<p>${question.body}</p>` : ''}
-            <p class="created-at">Asked on: ${new Date(question.created_at).toLocaleDateString()} ${new Date(question.created_at).toLocaleTimeString()}</p>
-            ${question.tags ? `<p class="tags">Tags: ${question.tags.join(', ')}</p>` : ''}
-            <div id="answers-section">
-                <h4>Answers</h4>
-                <div id="answer-list">
-                    </div>
-            </div>
-        `;
-        // Set the question ID as a data attribute
+        const questionTitleElement = document.querySelector('#question-detail-section .question-title');
+        const questionBodyElement = document.querySelector('#question-detail-section .question-body');
+        const createdAtElement = document.querySelector('#question-detail-section .created-at');
+        const tagsContainerElement = document.querySelector('#question-detail-section .tags-container');
+
+        questionTitleElement.textContent = question.title;
+        questionBodyElement.textContent = question.body || '';
+        createdAtElement.textContent = `${new Date(question.created_at).toLocaleDateString()} ${new Date(question.created_at).toLocaleTimeString()}`;
+
+        tagsContainerElement.innerHTML = ''; // Clear existing tags
+        if (question.tags && question.tags.length > 0) {
+            question.tags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.classList.add('tag');
+                tagElement.textContent = tag;
+                tagsContainerElement.appendChild(tagElement);
+            });
+        }
+
         document.getElementById('question-detail-section').dataset.questionId = question.id;
         questionsSection.style.display = 'none';
         questionDetailSection.style.display = 'block';
-        document.getElementById('answer-form').style.display = 'block'; // Show the answer form
+        document.getElementById('answer-form').style.display = 'block';
+
+        // Optionally, update the goBackToQuestions function to use the new button ID
+        const backButton = document.getElementById('back-to-questions-btn');
+        if (backButton) {
+            backButton.addEventListener('click', goBackToQuestions);
+        }
     }
 
     // Function to navigate back to the list of questions

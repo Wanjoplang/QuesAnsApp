@@ -41,23 +41,30 @@
         </div>
 
         <div id="question-detail-section" style="display: none;">
-            <h2>Question Details</h2>
-            <div id="question-details">
-                </div>
-            <h3>Add New Answer</h3>
-            <form id="answer-form" style="display: none;">
-                <div>
-                    <label for="answer-body">Your Answer:</label>
-                    <textarea id="answer-body" name="body" rows="5" required></textarea>
-                </div>
-                <button type="submit">Submit Answer</button>
-                <p id="answer-error" style="color: red; display: none;"></p>
-            </form>
-            <div id="answers-section">
-                <h4>Answers</h4>
+            <div class="question-details-container">
+                <h2 class="question-title"></h2>
+                <div class="question-body"></div>
+                <p class="question-meta">
+                    Asked on: <span class="created-at"></span>
+                    <span class="tags-container"></span>
+                </p>
+            </div>
+        
+            <div class="answers-section">
+                <h3>Answers</h3>
                 <div id="answer-list">
                     </div>
+                <h3 style="margin-top: 20px;">Your Answer</h3>
+                <form id="answer-form" style="display: block;">
+                    <div>
+                        <label for="answer-body">Your Answer:</label>
+                        <textarea id="answer-body" name="body" rows="5" required></textarea>
+                    </div>
+                    <button type="submit">Submit Answer</button>
+                    <p id="answer-error" style="color: red; display: none;"></p>
+                </form>
             </div>
+            <button id="back-to-questions-btn">Back to Questions</button>
         </div>
 
         <div id="create-question-section" style="display: none;">

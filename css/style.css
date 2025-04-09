@@ -1,110 +1,269 @@
+/* General Styles */
 body {
     font-family: sans-serif;
-    margin: 20px;
-    line-height: 1.6;
+    margin: 0;
+    padding: 0;
     background-color: #f4f4f4;
     color: #333;
 }
 
 header {
     background-color: #333;
-    color: #fff;
-    padding: 1em 0;
+    color: white;
+    padding: 1em;
     text-align: center;
-    margin-bottom: 20px;
-}
-
-header h1 {
-    margin: 0;
 }
 
 nav {
-    margin-top: 10px;
+    margin-top: 1em;
 }
 
 nav button {
-    padding: 0.5em 1em;
-    margin: 0 5px;
-    cursor: pointer;
+    background-color: #5cb85c;
+    color: white;
     border: none;
+    padding: 0.5em 1em;
+    margin: 0 0.5em;
     border-radius: 5px;
-    background-color: #555;
-    color: #fff;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+nav button:hover {
+    background-color: #4cae4c;
 }
 
 main {
-    background-color: #fff;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 960px;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h2, h3 {
     color: #333;
-    margin-top: 20px;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 5px;
+    margin-bottom: 0.5em;
 }
 
-#login-section, #questions-section, #question-detail-section, #create-question-section {
-    margin-bottom: 20px;
-    padding: 15px;
+label {
+    display: block;
+    margin-bottom: 0.3em;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: 0.7em;
+    margin-bottom: 1em;
     border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-#question-list {
-    margin-top: 10px;
-}
-
-.question-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.question-item:last-child {
-    border-bottom: none;
-}
-
-.question-item h4 {
-    margin-top: 0;
-    color: #007bff;
-    cursor: pointer;
-}
-
-.question-item .tags {
-    font-size: 0.9em;
-    color: #777;
-}
-
-#load-more-questions-btn, #ask-question-btn, #answer-form button[type="submit"], #create-question-form button[type="submit"], #login-form button[type="submit"] {
-    padding: 0.8em 1.5em;
-    margin-top: 10px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
+    border-radius: 4px;
+    box-sizing: border-box;
     font-size: 1em;
 }
 
-#load-more-questions-btn:hover, #ask-question-btn:hover, #answer-form button[type="submit"]:hover, #create-question-form button[type="submit"]:hover, #login-form button[type="submit"]:hover, nav button:hover {
+textarea {
+    resize: vertical;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.7em 1.5em;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-#answer-form textarea, #create-question-form textarea, #create-question-form input[type="text"], #login-form input[type="text"], #login-form input[type="password"] {
-    width: 100%;
-    padding: 0.7em;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.error {
+    color: red;
+    margin-top: 0.5em;
 }
 
 footer {
     text-align: center;
+    padding: 1em;
     margin-top: 20px;
-    padding: 1em 0;
+    background-color: #333;
+    color: white;
+    font-size: 0.9em;
+}
+
+/* Questions Section */
+#question-list {
+    margin-top: 1em;
+}
+
+.question-item {
+    padding: 15px;
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.question-item h4 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.question-item h4:hover {
+    text-decoration: underline;
+}
+
+.question-item .tags {
+    font-size: 0.85em;
+    color: #777;
+}
+
+#load-more-questions-btn {
+    display: block;
+    width: 100%;
+    padding: 0.7em;
+    margin-top: 1em;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+#load-more-questions-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Question Detail Section */
+#question-detail-section {
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.question-details-container {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.question-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.question-body {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: #555;
+    white-space: pre-wrap; /* Preserve line breaks */
+}
+
+.question-meta {
     font-size: 0.9em;
     color: #777;
+    margin-bottom: 10px;
+}
+
+.tags-container {
+    margin-left: 10px;
+}
+
+.tag {
+    display: inline-block;
+    background-color: #e0e0e0;
+    color: #333;
+    padding: 5px 8px;
+    border-radius: 3px;
+    margin-right: 5px;
+    font-size: 0.85em;
+}
+
+.answers-section {
+    margin-top: 20px;
+}
+
+.answers-section h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.answer-item {
+    padding: 15px;
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.answer-item p {
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 8px;
+    white-space: pre-wrap; /* Preserve line breaks */
+}
+
+.answer-item .created-at {
+    font-size: 0.8em;
+    color: #777;
+}
+
+.answer-item hr {
+    border: 0;
+    border-top: 1px solid #f0f0f0;
+    margin: 10px 0;
+}
+
+#back-to-questions-btn {
+    padding: 10px 15px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 20px;
+}
+
+#back-to-questions-btn:hover {
+    background-color: #4cae4c;
+}
+
+/* Create Question Section */
+#create-question-section {
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#create-question-section h2 {
+    margin-bottom: 1em;
+}
+
+#create-question-section button[type="submit"] {
+    margin-top: 1em;
+}
+
+/* Username Display */
+#username-display {
+    margin-right: 10px;
+    font-weight: bold;
+    color: white;
 }
